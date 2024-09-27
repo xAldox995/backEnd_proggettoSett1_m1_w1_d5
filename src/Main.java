@@ -52,25 +52,36 @@ public class Main {
 //Menu per la riproduzione
         int scelta;
         do {
-            System.out.println("Quale elemento voui eseguire? (1-5, 0 se voui terminare): ");
-            scelta = Integer.parseInt(in.nextLine());
+            System.out.println("\nMenu Principale:");
+            System.out.println("1. Esegui un elemento");
+            System.out.println("2. Modifica un elemento");
+            System.out.println("0. Termina il programma");
+            scelta = leggiIntero(in, "Scegli un'opzione: ", 0, 2);
 
-            if (scelta > 0 && scelta <= 5) {
-                ElementoMultimediale e = playList[scelta - 1];
-
-                if (e instanceof Riprodicibile) {
-                    ((Riprodicibile) e).play();
-                } else if (e instanceof Visualizzazione) {
-                    ((Visualizzazione) e).show();
-                } else {
-                    System.out.println("Elemento non eseguibile. ");
-                }
-            } else if (scelta != 0) {
-                System.out.println("Scelta non Valida. Riprovare");
+            switch (scelta) {
+                case 1:
+                    eseguiElemento(in, playList);
+                    break;
+                case 2:
+                    modificaElemento(in, playList);
+                    break;
+                case 0:
+                    System.out.println("Programma terminato.");
+                    break;
+                default:
+                    System.out.println("Scelta non valida. Riprovare.");
             }
         } while (scelta != 0);
 
         in.close();
+    }
+
+    private static void stampaListaElementi(ElementoMultimediale[] playList) {
+        System.out.println("\nLista degli Elementi:");
+        for (int i = 0; i < playList.length; i++) {
+            ElementoMultimediale e = playList[i];
+            System.out.println((i + 1) + ". " + e.toString());
+        }
     }
 
     //Metodo che mi serve per idententificare se il dato del Vol e Lum rispetta tutti i criteri
@@ -138,5 +149,122 @@ public class Main {
             }
         }
         return value;
+    }
+
+    private static void eseguiElemento(Scanner in, ElementoMultimediale[] playList) {
+        stampaListaElementi(playList);
+        int indice = leggiIntero(in, "Quale elemento vuoi eseguire? (1-5): ", 1, 5);
+        ElementoMultimediale e = playList[indice - 1];
+
+        if (e instanceof Riprodicibile) {
+            ((Riprodicibile) e).play();
+        } else if (e instanceof Visualizzazione) {
+            ((Visualizzazione) e).show();
+        } else {
+            System.out.println("Elemento non eseguibile.");
+        }
+    }
+
+    // Metodo per modificare un elemento
+    private static void modificaElemento(Scanner in, ElementoMultimediale[] playList) {
+        stampaListaElementi(playList);
+        int indice = leggiIntero(in, "Quale elemento vuoi modificare? (1-5): ", 1, 5);
+        ElementoMultimediale e = playList[indice - 1];
+
+        if (e instanceof Audio) {
+            Audio audio = (Audio) e;
+            modificaAudio(in, audio);
+        } else if (e instanceof Video) {
+            Video video = (Video) e;
+            modificaVideo(in, video);
+        } else if (e instanceof Immagine) {
+            Immagine img = (Immagine) e;
+            modificaImmagine(in, img);
+        } else {
+            System.out.println("Elemento non modificabile.");
+        }
+    }
+
+    // Metodo per modificare un audio
+    private static void modificaAudio(Scanner in, Audio audio) {
+        int scelta;
+        do {
+            System.out.println("\nModifica Audio:");
+            System.out.println("1. Alza volume");
+            System.out.println("2. Abbassa volume");
+            System.out.println("0. Torna al menu principale");
+            scelta = leggiIntero(in, "Scegli un'opzione: ", 0, 2);
+
+            switch (scelta) {
+                case 1:
+                    audio.aumentaVolume();
+                    break;
+                case 2:
+                    audio.abbassaVolume();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Scelta non valida. Riprovare.");
+            }
+        } while (scelta != 0);
+    }
+
+    // Metodo per modificare un video
+    private static void modificaVideo(Scanner in, Video video) {
+        int scelta;
+        do {
+            System.out.println("\nModifica Video:");
+            System.out.println("1. Alza volume");
+            System.out.println("2. Abbassa volume");
+            System.out.println("3. Aumenta luminosità");
+            System.out.println("4. Diminuisci luminosità");
+            System.out.println("0. Torna al menu principale");
+            scelta = leggiIntero(in, "Scegli un'opzione: ", 0, 4);
+
+            switch (scelta) {
+                case 1:
+                    video.aumentaVolume();
+                    break;
+                case 2:
+                    video.aumentaVolume();
+                    break;
+                case 3:
+                    video.alzaLuminosita();
+                    break;
+                case 4:
+                    video.abbassaLuminosita();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Scelta non valida. Riprovare.");
+            }
+        } while (scelta != 0);
+    }
+
+    // Metodo per modificare un'immagine
+    private static void modificaImmagine(Scanner in, Immagine img) {
+        int scelta;
+        do {
+            System.out.println("\nModifica Immagine:");
+            System.out.println("1. Aumenta luminosità");
+            System.out.println("2. Diminuisci luminosità");
+            System.out.println("0. Torna al menu principale");
+            scelta = leggiIntero(in, "Scegli un'opzione: ", 0, 2);
+
+            switch (scelta) {
+                case 1:
+                    img.alzaLuminosita();
+                    break;
+                case 2:
+                    img.abbassaLuminosita();
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Scelta non valida. Riprovare.");
+            }
+        } while (scelta != 0);
     }
 }

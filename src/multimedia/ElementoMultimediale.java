@@ -11,4 +11,9 @@ public abstract class ElementoMultimediale {
         return titolo;
     }
 
+    @Override
+    public String toString() {
+        return "Titolo: " + titolo;
+    }
+
 }

@@ -13,18 +13,30 @@ public class Audio extends ElementoMultimediale implements Riprodicibile {
         this.volume = volume;
     }
 
-    public void abbassaVolume() {
-        if (volume > 1) {
-            volume--;
-        }
+    public String toString() {
+        return "Audio - " + super.toString() + ", Durata: " + durata + " min, Volume: " + volume;
+    }
 
+
+    public void abbassaVolume() {
+        if (volume > 0) {
+            volume--;
+            System.out.println("Volume diminuito a " + volume);
+        } else {
+            System.out.println("Il volume è già al minimo.");
+        }
     }
 
     public void aumentaVolume() {
         if (volume < 10) {
             volume++;
+            System.out.println("Volume aumentato a " + volume);
+        } else {
+            System.out.println("Il volume è già al massimo.");
         }
+
     }
+
 
     @Override
     public void play() {
