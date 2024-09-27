@@ -17,7 +17,6 @@ public class Main {
 
         for (int i = 0; i < 5; i++) {
             System.out.println("Crezione del Brano " + (i + 1));
-            System.out.println("Scegli l'elemento da dichiarate (1=Audio, 2=Video, 3=Immagine)");
             int tipoElemento = leggiIntero(in, "Scegli l'elemento (1=Audio, 2=Video, 3=Immagine): ", 1,3);
 
             System.out.println("Inserisci il titolo: ");
