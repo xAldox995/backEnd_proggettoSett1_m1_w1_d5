@@ -17,7 +17,7 @@ public class Main {
 
         for (int i = 0; i < 5; i++) {
             System.out.println("Crezione del Brano " + (i + 1));
-            int tipoElemento = leggiIntero(in, "Scegli l'elemento (1=Audio, 2=Video, 3=Immagine): ", 1,3);
+            int tipoElemento = leggiIntero(in, "Scegli l'elemento (1=Audio, 2=Video, 3=Immagine): ", 1, 3);
 
             System.out.println("Inserisci il titolo: ");
             String titolo = in.nextLine();
@@ -75,55 +75,25 @@ public class Main {
 
     //Metodo che mi serve per idententificare se il dato del Vol e Lum rispetta tutti i criteri
     // NON DEVE ESSSERE NEGATIVO E NON DEVE ESSERE DEVIMALE
-
     private static boolean isInteger(String str) {
-        if (str.equals(null) || str.isEmpty()) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
         }
-
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (str.length() == 1) {
-                return false;
-            }
-            i = 1;
-        }
-
-        for (; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 
     //Metodo che mi serve per idententificare se il dato della durata rispetta tutti i criteri
     // NON DEVE ESSSERE NEGATIVO E DEVE ESSERE DEVIMALE
 
     private static boolean isDouble(String str) {
-        if (str == null || str.isEmpty()) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
         }
-        int i = 0;
-        boolean puntoTrovato = false;
-        if (str.charAt(0) == '-') {
-            if (str.length() == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        for (; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c == '.') {
-                if (puntoTrovato) {
-                    return false; // Più di un punto decimale
-                }
-                puntoTrovato = true;
-            } else if (!Character.isDigit(c)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     //METODO PER CONTROLLARE SE IL VOLUME RIENTRA NEL RANGE 1-10 COL RELATIVO MESSAGGIO DI ERRORE
@@ -148,19 +118,19 @@ public class Main {
         return value;
     }
 
-    //METODO PER CONTROLLARE SE LA DURATA SIA UN DOUBLEC OL RELATIVO MESSAGGIO DI ERRORE
+    //METODO PER CONTROLLARE SE LA DURATA SIA UN DOUBLE OL RELATIVO MESSAGGIO DI ERRORE
 
-    public static double leggiDouble (Scanner sc, String txt){
+    public static double leggiDouble(Scanner sc, String txt) {
         double value = 0;
         boolean validita = false;
-        while (!validita){
+        while (!validita) {
             System.out.println(txt);
             String input = sc.nextLine();
-            if (isDouble(input)){
+            if (isDouble(input)) {
                 value = Double.parseDouble(input);
                 if (value > 0) {
                     validita = true;
-                }else {
+                } else {
                     System.out.println("Il valore deve essere positivo");
                 }
             } else {
