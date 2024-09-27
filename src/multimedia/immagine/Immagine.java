@@ -26,5 +26,6 @@ public class Immagine extends ElementoMultimediale implements Visualizzazione {
     @Override
     public void show() {
         String output = titolo + " " + "*".repeat(luminosita);
+        System.out.println(output);
     }
 }
