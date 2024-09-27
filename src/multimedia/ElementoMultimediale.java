@@ -11,5 +11,4 @@ public abstract class ElementoMultimediale {
         return titolo;
     }
 
-    public abstract void play();
 }
