@@ -18,7 +18,7 @@ public class Main {
         for (int i = 0; i < 5; i++) {
             System.out.println("Crezione del Brano " + (i + 1));
             System.out.println("Scegli l'elemento da dichiarate (1=Audio, 2=Video, 3=Immagine)");
-            int tipoElemento = Integer.parseInt(in.nextLine());
+            int tipoElemento = leggiIntero(in, "Scegli l'elemento (1=Audio, 2=Video, 3=Immagine): ", 1,3);
 
             System.out.println("Inserisci il titolo: ");
             String titolo = in.nextLine();
@@ -26,36 +26,24 @@ public class Main {
             switch (tipoElemento) {
                 //Case per audio
                 case 1:
-                    System.out.println("Inserisci la durata: ");
-                    double durataAudio = Double.parseDouble(in.nextLine());
-
-                    System.out.println("Inserisci il volume (1-10)");
-                    int volumeAudio = Integer.parseInt(in.nextLine());
-
+                    double durataAudio = leggiDouble(in, "Inserisci la durata in minuti (valore positivo): ");
+                    int volumeAudio = leggiIntero(in, "Inserisci il volume (1-10): ", 1, 10);
                     playList[i] = new Audio(titolo, durataAudio, volumeAudio);
                     break;
 
                 //Case per Video
                 case 2:
-                    System.out.println("Inserisci la durata: ");
-                    double durataVideo = Double.parseDouble(in.nextLine());
-
-                    System.out.println("Inserisci il volume (1-10)");
-                    int volumeVideo = Integer.parseInt(in.nextLine());
-
-                    System.out.println("Inserisci la luminosità (1-10)");
-                    int luminositaVideo = Integer.parseInt(in.nextLine());
-
+                    double durataVideo = leggiDouble(in, "Inserisci la durata in minuti (valore positivo): ");
+                    int volumeVideo = leggiIntero(in, "Inserisci il volume (1-10): ", 1, 10);
+                    int luminositaVideo = leggiIntero(in, "Inserisci la luminosità (1-10): ", 1, 10);
                     playList[i] = new Video(titolo, durataVideo, volumeVideo, luminositaVideo);
                     break;
 
                 //Case per Immagine
                 case 3:
-                    System.out.println("Inserisci luminosita (1-10): ");
-                    int luminositaImg = Integer.parseInt(in.nextLine());
-                    playList[i] = new Immagine(titolo,luminositaImg);
+                    int luminositaImg = leggiIntero(in, "Inserisci la luminosità (1-10): ", 1, 10);
+                    playList[i] = new Immagine(titolo, luminositaImg);
                     break;
-
                 default:
                     System.out.println("Tipo non valido. Riprovare");
                     i--;
@@ -68,21 +56,118 @@ public class Main {
             System.out.println("Quale elemento voui eseguire? (1-5, 0 se voui terminare): ");
             scelta = Integer.parseInt(in.nextLine());
 
-            if (scelta > 0 && scelta <= 5){
+            if (scelta > 0 && scelta <= 5) {
                 ElementoMultimediale e = playList[scelta - 1];
 
-                if (e instanceof Riprodicibile){
-                    ((Riprodicibile)e).play();
+                if (e instanceof Riprodicibile) {
+                    ((Riprodicibile) e).play();
                 } else if (e instanceof Visualizzazione) {
-                    ((Visualizzazione)e).show();
+                    ((Visualizzazione) e).show();
                 } else {
                     System.out.println("Elemento non eseguibile. ");
                 }
             } else if (scelta != 0) {
                 System.out.println("Scelta non Valida. Riprovare");
             }
-        } while (scelta !=0 );
+        } while (scelta != 0);
 
         in.close();
+    }
+
+    //Metodo che mi serve per idententificare se il dato del Vol e Lum rispetta tutti i criteri
+    // NON DEVE ESSSERE NEGATIVO E NON DEVE ESSERE DEVIMALE
+
+    private static boolean isInteger(String str) {
+        if (str.equals(null) || str.isEmpty()) {
+            return false;
+        }
+
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (str.length() == 1) {
+                return false;
+            }
+            i = 1;
+        }
+
+        for (; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //Metodo che mi serve per idententificare se il dato della durata rispetta tutti i criteri
+    // NON DEVE ESSSERE NEGATIVO E DEVE ESSERE DEVIMALE
+
+    private static boolean isDouble(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        int i = 0;
+        boolean puntoTrovato = false;
+        if (str.charAt(0) == '-') {
+            if (str.length() == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == '.') {
+                if (puntoTrovato) {
+                    return false; // Più di un punto decimale
+                }
+                puntoTrovato = true;
+            } else if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //METODO PER CONTROLLARE SE IL VOLUME RIENTRA NEL RANGE 1-10 COL RELATIVO MESSAGGIO DI ERRORE
+
+    private static int leggiIntero(Scanner sc, String text, int min, int max) {
+        int value = 0;
+        boolean validita = false;
+        while (!validita) {
+            System.out.println(text);
+            String input = sc.nextLine();
+            if (isInteger(input)) {
+                value = Integer.parseInt(input);
+                if (value >= min && value <= max) {
+                    validita = true;
+                } else {
+                    System.out.println("Il valore deve essere tra " + min + " e " + max);
+                }
+            } else {
+                System.out.println("Input non valido. Inserisci un numero intero");
+            }
+        }
+        return value;
+    }
+
+    //METODO PER CONTROLLARE SE LA DURATA SIA UN DOUBLEC OL RELATIVO MESSAGGIO DI ERRORE
+
+    public static double leggiDouble (Scanner sc, String txt){
+        double value = 0;
+        boolean validita = false;
+        while (!validita){
+            System.out.println(txt);
+            String input = sc.nextLine();
+            if (isDouble(input)){
+                value = Double.parseDouble(input);
+                if (value > 0) {
+                    validita = true;
+                }else {
+                    System.out.println("Il valore deve essere positivo");
+                }
+            } else {
+                System.out.println("Input non valido. Inserisci numero decimale");
+            }
+        }
+        return value;
     }
 }
