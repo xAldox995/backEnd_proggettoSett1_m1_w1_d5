@@ -17,7 +17,7 @@ public class Video extends ElementoMultimediale implements Riprodicibile {
     }
 
     public String toString() {
-        return "Video - " + super.toString() + ", Luminosità: " + luminosita;
+        return "Video - " + super.toString() + ", Durata: " + durata + " min, Volume: " + volume + ", Luminosità: " + luminosita;
     }
 
     public void abbassaVolume() {

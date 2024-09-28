@@ -9,13 +9,13 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        ElementoMultimediale[] playList = new ElementoMultimediale[5];
+        ElementoMultimediale[] playList = new ElementoMultimediale[3];
 
         Scanner in = new Scanner(System.in);
 
         //Creazione della playlist
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             System.out.println("Crezione del Brano " + (i + 1));
             int tipoElemento = leggiIntero(in, "Scegli l'elemento (1=Audio, 2=Video, 3=Immagine): ", 1, 3);
 
